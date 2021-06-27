@@ -43,7 +43,7 @@ namespace ControleHorasColaborador.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGestor(long id, Gestor gestor)
         {
-            if (id != gestor.gestorId)
+            if (id != gestor.GestorId)
             {
                 return BadRequest();
             }
@@ -75,7 +75,7 @@ namespace ControleHorasColaborador.Controllers
             _context.Gestor.Add(gestor);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGestor", new { id = gestor.gestorId }, gestor);
+            return CreatedAtAction("GetGestor", new { id = gestor.GestorId }, gestor);
         }
 
         [HttpDelete("{id}")]
@@ -95,7 +95,7 @@ namespace ControleHorasColaborador.Controllers
 
         private bool GestorExists(long id)
         {
-            return _context.Gestor.Any(e => e.gestorId == id);
+            return _context.Gestor.Any(e => e.GestorId == id);
         }
     }
 }

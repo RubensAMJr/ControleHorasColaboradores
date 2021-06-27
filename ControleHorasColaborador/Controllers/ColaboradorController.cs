@@ -43,7 +43,8 @@ namespace ControleHorasColaborador.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutColaborador(long id, Colaborador colaborador)
         {
-            if (id != colaborador.colaboradorId)
+
+            if (id != colaborador.ColaboradorId)
             {
                 return BadRequest();
             }
@@ -72,10 +73,16 @@ namespace ControleHorasColaborador.Controllers
         [HttpPost]
         public async Task<ActionResult<Colaborador>> PostColaborador(Colaborador colaborador)
         {
-            _context.Colaboradores.Add(colaborador);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Colaboradores.Add(colaborador);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetColaborador", new { id = colaborador.colaboradorId }, colaborador);
+                return CreatedAtAction("GetColaborador", new { id = colaborador.ColaboradorId }, colaborador);
+            }catch(Exception e)
+            {
+                return NoContent();
+            }
         }
 
         [HttpDelete("{id}")]
@@ -95,7 +102,7 @@ namespace ControleHorasColaborador.Controllers
 
         private bool ColaboradorExists(long id)
         {
-            return _context.Colaboradores.Any(e => e.colaboradorId == id);
+            return _context.Colaboradores.Any(e => e.ColaboradorId == id);
         }
     }
 }

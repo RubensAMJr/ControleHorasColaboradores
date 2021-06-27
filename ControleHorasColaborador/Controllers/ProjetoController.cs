@@ -43,7 +43,7 @@ namespace ControleHorasColaborador.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProjeto(long id, Projeto projeto)
         {
-            if (id != projeto.projetoId)
+            if (id != projeto.ProjetoId)
             {
                 return BadRequest();
             }
@@ -75,7 +75,7 @@ namespace ControleHorasColaborador.Controllers
             _context.Projetos.Add(projeto);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProjeto", new { id = projeto.projetoId }, projeto);
+            return CreatedAtAction("GetProjeto", new { id = projeto.ProjetoId }, projeto);
         }
 
         [HttpDelete("{id}")]
@@ -95,7 +95,7 @@ namespace ControleHorasColaborador.Controllers
 
         private bool ProjetoExists(long id)
         {
-            return _context.Projetos.Any(e => e.projetoId == id);
+            return _context.Projetos.Any(e => e.ProjetoId == id);
         }
     }
 }

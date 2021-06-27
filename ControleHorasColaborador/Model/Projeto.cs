@@ -7,8 +7,15 @@ namespace ControleHorasColaborador.Model
 {
     public class Projeto
     {
-        public long projetoId { get; set; }
-        public string nomeProjeto { get; set; }
-        public int horasTrabalhadasProjeto { get; set; }
+        public long ProjetoId { get; set; }
+        public string NomeProjeto { get; set; }
+        public int HorasTrabalhadasProjeto { get; set; }
+
+        public Equipe Equipe { get; set; }
+
+        public Projeto(string nomeProjeto)
+        {
+            this.NomeProjeto = nomeProjeto;
+        }
     }
 }

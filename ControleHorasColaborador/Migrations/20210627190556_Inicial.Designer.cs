@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleHorasColaborador.Migrations
 {
     [DbContext(typeof(ControleHorasContext))]
-    [Migration("20210627181943_primeira-migration")]
-    partial class primeiramigration
+    [Migration("20210627190556_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

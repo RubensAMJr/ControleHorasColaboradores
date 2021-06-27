@@ -7,7 +7,12 @@ namespace ControleHorasColaborador.Model
 {
     public class Gestor
     {
-        public long gestorId { get; set; }
-        public int nome { get; set; }
+        public long GestorId { get; set; }
+        public string Nome { get; set; }
+
+        public Gestor(string nome)
+        {
+            this.Nome = nome;
+        }
     }
 }

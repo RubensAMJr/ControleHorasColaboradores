@@ -28,9 +28,9 @@ namespace ControleHorasColaborador
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           // services.AddEntityFrameworkSqlServer()
-           //.AddDbContext<ControleHorasContext>(options =>
-           //   options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RestauranteDb;Trusted_Connection=true;"));
+            services.AddEntityFrameworkSqlServer()
+           .AddDbContext<ControleHorasContext>(options =>
+              options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ControleHorasDB;Trusted_Connection=true;"));
 
             services.AddControllers();
         }

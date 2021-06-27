@@ -2,7 +2,7 @@
 
 namespace ControleHorasColaborador.Migrations
 {
-    public partial class primeiramigration : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -54,13 +54,13 @@ namespace ControleHorasColaborador.Controllers
             }
             catch (DbUpdateException)
             {
-                if (EquipeExists(equipe.EquipeId))
+                if (EquipeExists(equipe.NomeEquipe))
                     return Conflict("Uma equipe com o nome informado já existe.");
                 else
                     throw;
             }
 
-            return CreatedAtAction("GetEquipe", new { id = equipe.EquipeId }, equipe);
+            return CreatedAtAction("AdicionarEquipe", new { id = equipe.EquipeId }, equipe);
         }
 
         [ActionName("RemoverEquipe")]
@@ -79,9 +79,9 @@ namespace ControleHorasColaborador.Controllers
             return equipe;
         }
 
-        private bool EquipeExists(long equipeId)
+        private bool EquipeExists(string nomeEquipe)
         {
-            return _context.Equipes.Any(e => e.EquipeId == equipeId);
+            return _context.Equipes.Any(e => e.NomeEquipe == nomeEquipe);
         }
 
 

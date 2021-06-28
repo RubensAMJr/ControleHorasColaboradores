@@ -25,18 +25,20 @@ namespace ControleHorasColaborador.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Projeto>>> GetProjetos()
         {
-            return await _context.Projetos.ToListAsync();
+            return await _context.Projetos.Include(p => p.Equipe)
+                                          .ToListAsync();
         }
 
         [ActionName("GetProjetoById")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Projeto>> GetProjeto(long id)
         {
-            var projeto = await _context.Projetos.FindAsync(id);
+            var projeto = await _context.Projetos.Include(p => p.Equipe)
+                                                 .FirstOrDefaultAsync();
 
             if (projeto == null)
             {
-                return NotFound();
+                return NotFound("O projeto com o Id informado não foi encontrado");
             }
 
             return projeto;
@@ -60,7 +62,7 @@ namespace ControleHorasColaborador.Controllers
                     throw;
             }
 
-            return CreatedAtAction("GetProjeto", new { id = projeto.ProjetoId }, projeto);
+            return CreatedAtAction("AdicionarProjeto", new { id = projeto.ProjetoId }, projeto);
         }
 
         [ActionName("ApagarProjeto")]
@@ -70,7 +72,7 @@ namespace ControleHorasColaborador.Controllers
             var projeto = await _context.Projetos.FindAsync(id);
             if (projeto == null)
             {
-                return NotFound();
+                return NotFound("O projeto com o Id informado não foi encontrado");
             }
 
             _context.Projetos.Remove(projeto);

@@ -10,13 +10,13 @@ using ControleHorasColaborador.Model;
 
 namespace ControleHorasColaborador.Controllers
 {
-    [Route("Gestao/[action]")]
+    [Route("Associacao/[action]")]
     [ApiController]
-    public class EquipeColaboradorController : ControllerBase
+    public class AssociacaoEquipeColaboradorController : ControllerBase
     {
         private readonly ControleHorasContext _context;
 
-        public EquipeColaboradorController(ControleHorasContext context)
+        public AssociacaoEquipeColaboradorController(ControleHorasContext context)
         {
             _context = context;
         }

@@ -49,7 +49,7 @@ namespace ControleHorasColaborador.Controllers
             _context.Gestor.Add(gestor);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGestor", new { id = gestor.GestorId }, gestor);
+            return CreatedAtAction("AdicionarGestor", new { id = gestor.GestorId }, gestor);
         }
 
         [ActionName("ApagarGestor")]

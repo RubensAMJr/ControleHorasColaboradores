@@ -36,7 +36,7 @@ namespace ControleHorasColaborador.Controllers
 
             if (colaborador == null)
             {
-                return NotFound();
+                return NotFound("O Colaborador com o id informado não foi encontrado");
             }
 
             return colaborador;
@@ -49,7 +49,7 @@ namespace ControleHorasColaborador.Controllers
                 _context.Colaboradores.Add(colaborador);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetColaborador", new { id = colaborador.ColaboradorId }, colaborador);
+                return CreatedAtAction("AdicionarColaborador", new { id = colaborador.ColaboradorId }, colaborador);
 
         }
 
@@ -60,14 +60,26 @@ namespace ControleHorasColaborador.Controllers
             var colaborador = await _context.Colaboradores.FindAsync(id);
             if (colaborador == null)
             {
-                return NotFound();
+                return NotFound("O Colaborador com o id informado não foi encontrado");
             }
 
-            _context.Colaboradores.Remove(colaborador);
-            await _context.SaveChangesAsync();
+            if (ColaboradorEstaEmEquipe(id))
+            {
+                return Conflict("Este colaborador está associado á uma equipe, não è possível remove-lo");
+            }
+            else
+            {
+                _context.Colaboradores.Remove(colaborador);
 
-            return colaborador;
+                await _context.SaveChangesAsync();
+
+                return colaborador;
+            }
         }
 
+        private bool ColaboradorEstaEmEquipe(long id)
+        {
+            return _context.EquipeColaborador.Where(ec => ec.ColaboradorId == id).FirstOrDefault() != null;
+        }
     }
 }

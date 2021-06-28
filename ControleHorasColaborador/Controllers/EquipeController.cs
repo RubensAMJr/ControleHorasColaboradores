@@ -10,7 +10,7 @@ using ControleHorasColaborador.Model;
 
 namespace ControleHorasColaborador.Controllers
 {
-    [Route("Operacao/[controller]")]
+    [Route("Gestao/[action]")]
     [ApiController]
     public class EquipeController : ControllerBase
     {
@@ -21,12 +21,14 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        [ActionName("GetAllEquipes")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Equipe>>> GetEquipes()
         {
             return await _context.Equipes.ToListAsync();
         }
 
+        [ActionName("GetAllEquipesById")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Equipe>> GetEquipe(long id)
         {
@@ -40,44 +42,28 @@ namespace ControleHorasColaborador.Controllers
             return equipe;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEquipe(long id, Equipe equipe)
+        [ActionName("AdicionarEquipe")]
+        [HttpPost]
+        public async Task<ActionResult<Equipe>> PostEquipe(Equipe equipe)
         {
-            if (id != equipe.EquipeId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(equipe).State = EntityState.Modified;
+            _context.Equipes.Add(equipe);
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException)
             {
-                if (!EquipeExists(id))
-                {
-                    return NotFound();
-                }
+                if (EquipeExists(equipe.EquipeId))
+                    return Conflict("Uma equipe com o nome informado já existe.");
                 else
-                {
                     throw;
-                }
             }
-
-            return NoContent();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<Equipe>> PostEquipe(Equipe equipe)
-        {
-            _context.Equipes.Add(equipe);
-            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetEquipe", new { id = equipe.EquipeId }, equipe);
         }
 
+        [ActionName("RemoverEquipe")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Equipe>> DeleteEquipe(long id)
         {
@@ -93,9 +79,13 @@ namespace ControleHorasColaborador.Controllers
             return equipe;
         }
 
-        private bool EquipeExists(long id)
+        private bool EquipeExists(long equipeId)
         {
-            return _context.Equipes.Any(e => e.EquipeId == id);
+            return _context.Equipes.Any(e => e.EquipeId == equipeId);
         }
+
+
+
+
     }
 }

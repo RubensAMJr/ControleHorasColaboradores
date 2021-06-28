@@ -10,7 +10,7 @@ using ControleHorasColaborador.Model;
 
 namespace ControleHorasColaborador.Controllers
 {
-    [Route("Operacao/[controller]")]
+    [Route("Gestao/[action]")]
     [ApiController]
     public class ColaboradorController : ControllerBase
     {
@@ -21,12 +21,14 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        [ActionName("GetAllColaboradores")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Colaborador>>> GetColaboradores()
         {
             return await _context.Colaboradores.ToListAsync();
         }
 
+        [ActionName("GetColaboradorById")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Colaborador>> GetColaborador(long id)
         {
@@ -40,51 +42,18 @@ namespace ControleHorasColaborador.Controllers
             return colaborador;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutColaborador(long id, Colaborador colaborador)
-        {
-
-            if (id != colaborador.ColaboradorId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(colaborador).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ColaboradorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
+        [ActionName("AdicionarColaborador")]
         [HttpPost]
         public async Task<ActionResult<Colaborador>> PostColaborador(Colaborador colaborador)
         {
-            try
-            {
                 _context.Colaboradores.Add(colaborador);
                 await _context.SaveChangesAsync();
 
                 return CreatedAtAction("GetColaborador", new { id = colaborador.ColaboradorId }, colaborador);
-            }catch(Exception e)
-            {
-                return NoContent();
-            }
+
         }
 
+        [ActionName("RemoverColaborador")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Colaborador>> DeleteColaborador(long id)
         {
@@ -100,9 +69,5 @@ namespace ControleHorasColaborador.Controllers
             return colaborador;
         }
 
-        private bool ColaboradorExists(long id)
-        {
-            return _context.Colaboradores.Any(e => e.ColaboradorId == id);
-        }
     }
 }

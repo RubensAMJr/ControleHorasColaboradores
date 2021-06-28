@@ -13,9 +13,5 @@ namespace ControleHorasColaborador.Model
 
         public Equipe Equipe { get; set; }
 
-        public Projeto(string nomeProjeto)
-        {
-            this.NomeProjeto = nomeProjeto;
-        }
     }
 }

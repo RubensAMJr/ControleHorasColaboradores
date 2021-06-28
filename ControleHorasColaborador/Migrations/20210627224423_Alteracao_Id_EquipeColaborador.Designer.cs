@@ -4,14 +4,16 @@ using ControleHorasColaborador.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ControleHorasColaborador.Migrations
 {
     [DbContext(typeof(ControleHorasContext))]
-    partial class ControleHorasContextModelSnapshot : ModelSnapshot
+    [Migration("20210627224423_Alteracao_Id_EquipeColaborador")]
+    partial class Alteracao_Id_EquipeColaborador
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,16 +47,12 @@ namespace ControleHorasColaborador.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("NomeEquipe")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("ProjetoId")
                         .HasColumnType("bigint");
 
                     b.HasKey("EquipeId");
-
-                    b.HasIndex("NomeEquipe")
-                        .IsUnique()
-                        .HasFilter("[NomeEquipe] IS NOT NULL");
 
                     b.HasIndex("ProjetoId")
                         .IsUnique()
@@ -78,10 +76,9 @@ namespace ControleHorasColaborador.Migrations
 
                     b.HasKey("EquipeColaboradorId");
 
-                    b.HasIndex("EquipeId");
+                    b.HasIndex("ColaboradorId");
 
-                    b.HasIndex("ColaboradorId", "EquipeId")
-                        .IsUnique();
+                    b.HasIndex("EquipeId");
 
                     b.ToTable("EquipeColaborador");
                 });
@@ -112,13 +109,9 @@ namespace ControleHorasColaborador.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("NomeProjeto")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProjetoId");
-
-                    b.HasIndex("NomeProjeto")
-                        .IsUnique()
-                        .HasFilter("[NomeProjeto] IS NOT NULL");
 
                     b.ToTable("Projetos");
                 });

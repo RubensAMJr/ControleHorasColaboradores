@@ -10,11 +10,5 @@ namespace ControleHorasColaborador.Model
         public long ColaboradorId { get; set; }
         public string Nome { get; set; }
         public List<EquipeColaborador> EquipeColaborador { get; set; }
-
-
-        public Colaborador(string nome)
-        {
-            this.Nome = nome;
-        }
     }
 }

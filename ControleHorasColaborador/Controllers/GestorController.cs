@@ -10,7 +10,7 @@ using ControleHorasColaborador.Model;
 
 namespace ControleHorasColaborador.Controllers
 {
-    [Route("Operacao/[controller]")]
+    [Route("Gestao/[action]")]
     [ApiController]
     public class GestorController : ControllerBase
     {
@@ -21,12 +21,14 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        [ActionName("GetAllGestores")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Gestor>>> GetGestor()
         {
             return await _context.Gestor.ToListAsync();
         }
 
+        [ActionName("GetGestorById")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Gestor>> GetGestor(long id)
         {
@@ -40,35 +42,7 @@ namespace ControleHorasColaborador.Controllers
             return gestor;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGestor(long id, Gestor gestor)
-        {
-            if (id != gestor.GestorId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(gestor).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GestorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
+        [ActionName("AdicionarGestor")]
         [HttpPost]
         public async Task<ActionResult<Gestor>> PostGestor(Gestor gestor)
         {
@@ -78,6 +52,7 @@ namespace ControleHorasColaborador.Controllers
             return CreatedAtAction("GetGestor", new { id = gestor.GestorId }, gestor);
         }
 
+        [ActionName("ApagarGestor")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Gestor>> DeleteGestor(long id)
         {
@@ -91,11 +66,6 @@ namespace ControleHorasColaborador.Controllers
             await _context.SaveChangesAsync();
 
             return gestor;
-        }
-
-        private bool GestorExists(long id)
-        {
-            return _context.Gestor.Any(e => e.GestorId == id);
         }
     }
 }

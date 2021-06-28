@@ -10,7 +10,7 @@ using ControleHorasColaborador.Model;
 
 namespace ControleHorasColaborador.Controllers
 {
-    [Route("Operacao/[controller]")]
+    [Route("Gestao/[action]")]
     [ApiController]
     public class ProjetoController : ControllerBase
     {
@@ -21,12 +21,14 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        [ActionName("GetAllProjetos")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Projeto>>> GetProjetos()
         {
             return await _context.Projetos.ToListAsync();
         }
 
+        [ActionName("GetProjetoById")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Projeto>> GetProjeto(long id)
         {
@@ -40,44 +42,28 @@ namespace ControleHorasColaborador.Controllers
             return projeto;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProjeto(long id, Projeto projeto)
+        [ActionName("AdicionarProjeto")]
+        [HttpPost]
+        public async Task<ActionResult<Projeto>> PostProjeto(Projeto projeto)
         {
-            if (id != projeto.ProjetoId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(projeto).State = EntityState.Modified;
+            _context.Projetos.Add(projeto);
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException)
             {
-                if (!ProjetoExists(id))
-                {
-                    return NotFound();
-                }
+                if (ProjetoExists(projeto.ProjetoId))
+                    return Conflict("Um projeto com o nome informado já existe.");
                 else
-                {
                     throw;
-                }
             }
-
-            return NoContent();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<Projeto>> PostProjeto(Projeto projeto)
-        {
-            _context.Projetos.Add(projeto);
-            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProjeto", new { id = projeto.ProjetoId }, projeto);
         }
 
+        [ActionName("ApagarProjeto")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Projeto>> DeleteProjeto(long id)
         {
@@ -93,9 +79,9 @@ namespace ControleHorasColaborador.Controllers
             return projeto;
         }
 
-        private bool ProjetoExists(long id)
+        private bool ProjetoExists(long projetoId)
         {
-            return _context.Projetos.Any(e => e.ProjetoId == id);
+            return _context.Projetos.Any(p => p.ProjetoId == projetoId);
         }
     }
 }

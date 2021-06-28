@@ -7,6 +7,7 @@ namespace ControleHorasColaborador.Model
 {
     public class EquipeColaborador
     {
+        public long EquipeColaboradorId { get; set; }
         public long EquipeId { get; set; }
 
         public Equipe Equipe { get; set; }

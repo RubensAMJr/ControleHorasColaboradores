@@ -4,14 +4,16 @@ using ControleHorasColaborador.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ControleHorasColaborador.Migrations
 {
     [DbContext(typeof(ControleHorasContext))]
-    partial class ControleHorasContextModelSnapshot : ModelSnapshot
+    [Migration("20210628003400_Inserção_de_constraints")]
+    partial class Inserção_de_constraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

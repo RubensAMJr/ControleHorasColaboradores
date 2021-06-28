@@ -33,7 +33,7 @@ namespace ControleHorasColaborador.Context
                    
 
             builder.Entity<EquipeColaborador>()
-                   .HasKey(ec => new { ec.ColaboradorId, ec.EquipeId});
+                   .HasKey(ec => ec.EquipeColaboradorId);
 
             builder.Entity<EquipeColaborador>()
                     .HasOne(ec => ec.Equipe)
@@ -44,9 +44,23 @@ namespace ControleHorasColaborador.Context
                    .HasOne(ec => ec.Colaborador)
                    .WithMany(c => c.EquipeColaborador)
                    .HasForeignKey(ec => ec.ColaboradorId);
-             
+
+            builder.Entity<EquipeColaborador>()
+            .HasIndex(ec => new { ec.ColaboradorId, ec.EquipeId })
+            .IsUnique(true);
+
+            builder.Entity<Projeto>()
+            .HasIndex(p => p.NomeProjeto)
+            .IsUnique(true);
+
+             builder.Entity<Equipe>()
+            .HasIndex(e => e.NomeEquipe)
+            .IsUnique(true);
+
             base.OnModelCreating(builder);
         }
+
+        public DbSet<ControleHorasColaborador.Model.EquipeColaborador> EquipeColaborador { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

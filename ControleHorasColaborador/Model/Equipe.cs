@@ -13,13 +13,8 @@ namespace ControleHorasColaborador.Model
 
         public List<EquipeColaborador> EquipeColaborador { get; set; }
 
-        public long ProjetoId { get; set; }
+        public long? ProjetoId { get; set; }
         public Projeto Projeto { get; set; }
 
-
-        public Equipe(string nomeEquipe)
-        {
-            this.NomeEquipe = nomeEquipe;
-        }
     }
 }

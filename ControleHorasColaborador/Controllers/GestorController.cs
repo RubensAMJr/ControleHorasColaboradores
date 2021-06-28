@@ -21,6 +21,9 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Retorna todos os gestores
+        /// </summary>
         [ActionName("GetAllGestores")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Gestor>>> GetGestor()
@@ -28,6 +31,9 @@ namespace ControleHorasColaborador.Controllers
             return await _context.Gestor.ToListAsync();
         }
 
+        /// <summary>
+        /// Retorna o gestor pelo Id
+        /// </summary>
         [ActionName("GetGestorById")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Gestor>> GetGestor(long id)
@@ -41,7 +47,9 @@ namespace ControleHorasColaborador.Controllers
 
             return gestor;
         }
-
+        /// <summary>
+        /// Adiciona um novo gestor
+        /// </summary>
         [ActionName("AdicionarGestor")]
         [HttpPost]
         public async Task<ActionResult<Gestor>> PostGestor(Gestor gestor)
@@ -52,6 +60,9 @@ namespace ControleHorasColaborador.Controllers
             return CreatedAtAction("AdicionarGestor", new { id = gestor.GestorId }, gestor);
         }
 
+        /// <summary>
+        /// Apaga o gestor informado
+        /// </summary>
         [ActionName("ApagarGestor")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Gestor>> DeleteGestor(long id)

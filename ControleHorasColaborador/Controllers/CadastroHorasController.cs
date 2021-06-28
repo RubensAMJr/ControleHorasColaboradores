@@ -22,6 +22,21 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Realiza o cadastro de quantidade de horas de um projeto
+        /// </summary>
+        /// <remarks>
+        /// Request de exemplo:
+        ///
+        ///     POST 
+        ///     {
+        ///       "QuantidadeHoras":10, 
+        ///       "ProjetoId":4   
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code ="200" >Retorna o projeto com as horas cadastradas</response>
+        /// <response code="404">Se o projeto não for encontrado ou se ele não possuir uma equipe associada a ele</response>
         [ActionName("CadastrarHoraProjeto")]
         [HttpPut]
         public async Task<ActionResult<Projeto>> CadastrarHoraProjeto(CadastroHorasRequestModel requestModel)
@@ -48,6 +63,12 @@ namespace ControleHorasColaborador.Controllers
             return projeto;
         }
 
+        /// <summary>
+        /// Consulta a quantidade de horas de um projeto
+        /// </summary>
+        /// <response code ="200" >Retorna o projeto e as horas cadastradas</response>
+        /// <response code="404">Se o projeto não for encontrado</response>
+        /// <param name="idProjeto"></param>
         [ActionName("ConsultarHorasProjeto")]
         [HttpGet("{idProjeto}")]
         public async Task<ActionResult> ConsultarHorasProjeto(long idProjeto)
@@ -60,6 +81,12 @@ namespace ControleHorasColaborador.Controllers
             return new JsonResult(new CadastroHorasResponseModel(projeto.ProjetoId,projeto.NomeProjeto,projeto.HorasTrabalhadasProjeto));
         }
 
+        /// <summary>
+        /// Consulta a quantidade de horas de uma equipe
+        /// </summary>
+        /// <response code ="200" >Retorna a equipe e as horas cadastradas</response>
+        /// <response code="404">Se a equipe não for encontrada</response>
+        /// <param name="idEquipe"></param>
         [ActionName("ConsultarHorasEquipe")]
         [HttpGet("{idEquipe}")]
         public async Task<ActionResult> GetEquipeColaboradorByEquipe(long idEquipe)

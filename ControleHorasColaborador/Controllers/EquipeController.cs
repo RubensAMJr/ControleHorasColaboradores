@@ -21,6 +21,9 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Retorna todas as equipes
+        /// </summary>
         [ActionName("GetAllEquipes")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Equipe>>> GetEquipes()
@@ -28,6 +31,9 @@ namespace ControleHorasColaborador.Controllers
             return await _context.Equipes.ToListAsync();
         }
 
+        /// <summary>
+        /// Retorna uma equipe pelo Id
+        /// </summary>
         [ActionName("GetAllEquipesById")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Equipe>> GetEquipe(long id)
@@ -42,6 +48,9 @@ namespace ControleHorasColaborador.Controllers
             return equipe;
         }
 
+        /// <summary>
+        /// Adiciona uma nova equipe
+        /// </summary>
         [ActionName("AdicionarEquipe")]
         [HttpPost]
         public async Task<ActionResult<Equipe>> PostEquipe(Equipe equipe)
@@ -63,6 +72,9 @@ namespace ControleHorasColaborador.Controllers
             return CreatedAtAction("AdicionarEquipe", new { id = equipe.EquipeId }, equipe);
         }
 
+        /// <summary>
+        /// Remove a equipe informada
+        /// </summary>
         [ActionName("RemoverEquipe")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Equipe>> DeleteEquipe(long id)

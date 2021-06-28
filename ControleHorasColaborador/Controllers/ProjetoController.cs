@@ -21,6 +21,9 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Retorna todos os projetos
+        /// </summary>
         [ActionName("GetAllProjetos")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Projeto>>> GetProjetos()
@@ -29,6 +32,9 @@ namespace ControleHorasColaborador.Controllers
                                           .ToListAsync();
         }
 
+        /// <summary>
+        /// Retorna o projeto informado
+        /// </summary>
         [ActionName("GetProjetoById")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Projeto>> GetProjeto(long id)
@@ -44,6 +50,9 @@ namespace ControleHorasColaborador.Controllers
             return projeto;
         }
 
+        /// <summary>
+        /// Adiciona um novo projeto
+        /// </summary>
         [ActionName("AdicionarProjeto")]
         [HttpPost]
         public async Task<ActionResult<Projeto>> PostProjeto(Projeto projeto)
@@ -65,6 +74,9 @@ namespace ControleHorasColaborador.Controllers
             return CreatedAtAction("AdicionarProjeto", new { id = projeto.ProjetoId }, projeto);
         }
 
+        /// <summary>
+        /// Deleta o projeto informado
+        /// </summary>
         [ActionName("ApagarProjeto")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Projeto>> DeleteProjeto(long id)

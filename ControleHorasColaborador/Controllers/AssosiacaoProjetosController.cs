@@ -21,9 +21,15 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Realiza a associação de um projeto com uma equipe
+        /// </summary>
+        /// <response code ="200" >Retorna a nova associação </response>
+        /// <response code="404">Se o projeto ou a equipe não forem encontrados</response>
+        /// <param name="projetoModel"></param>
         [ActionName("AssociarProjetoEquipe")]
         [HttpPut]
-        public async Task<ActionResult<Projeto>> PutProjeto(ProjetoEquipeRequestModel projetoModel)
+        public async Task<ActionResult<Projeto>> AssociarProjetoEquipe(ProjetoEquipeRequestModel projetoModel)
         {
             var projeto = _context.Projetos.Find(projetoModel.ProjetoId);
             var equipe  = _context.Equipes.Find(projetoModel.EquipeId);
@@ -42,9 +48,25 @@ namespace ControleHorasColaborador.Controllers
             return projeto;
         }
 
-        [ActionName("DesassociarColaboradorEquipe")]
+        /// <summary>
+        /// Realiza a desassosiação de um projeto de uma equipe
+        /// </summary>
+        /// <remarks>
+        /// Request de exemplo:
+        ///
+        ///     POST 
+        ///     {
+        ///       "EquipeId":5, 
+        ///       "ProjetoId":4   
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code ="200" >Retorna o Projeto Desassociado</response>
+        /// <response code="404">Se o projeto ou a equipe não forem encontrados</response>
+        /// <param name="projetoModel"></param>
+        [ActionName("DesassociarProjetoEquipe")]
         [HttpPut]
-        public async Task<ActionResult<Projeto>> DeleteProjeto(ProjetoEquipeRequestModel projetoModel)
+        public async Task<ActionResult<Projeto>> DesassociarProjetoEquipe(ProjetoEquipeRequestModel projetoModel)
         {
             var projeto = _context.Projetos.Where(p => p.ProjetoId == projetoModel.ProjetoId &&
                                                   p.Equipe.EquipeId == projetoModel.EquipeId)

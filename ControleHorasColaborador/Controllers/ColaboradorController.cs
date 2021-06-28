@@ -21,6 +21,9 @@ namespace ControleHorasColaborador.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Retorna todos os colaboradores cadastrados
+        /// </summary>
         [ActionName("GetAllColaboradores")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Colaborador>>> GetColaboradores()
@@ -28,6 +31,9 @@ namespace ControleHorasColaborador.Controllers
             return await _context.Colaboradores.ToListAsync();
         }
 
+        /// <summary>
+        /// Retorna os dados de um colaborador pelo ID dele
+        /// </summary>
         [ActionName("GetColaboradorById")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Colaborador>> GetColaborador(long id)
@@ -42,6 +48,9 @@ namespace ControleHorasColaborador.Controllers
             return colaborador;
         }
 
+        /// <summary>
+        /// Adiciona um novo colaborador
+        /// </summary>
         [ActionName("AdicionarColaborador")]
         [HttpPost]
         public async Task<ActionResult<Colaborador>> PostColaborador(Colaborador colaborador)
@@ -53,6 +62,9 @@ namespace ControleHorasColaborador.Controllers
 
         }
 
+        /// <summary>
+        /// Remove um colaborador
+        /// </summary>
         [ActionName("RemoverColaborador")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Colaborador>> DeleteColaborador(long id)

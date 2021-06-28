@@ -13,6 +13,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using ControleHorasColaborador.Model;
 using ControleHorasColaborador.Context;
+using System;
+using System.Reflection;
+using System.IO;
+using Microsoft.OpenApi.Models;
 
 namespace ControleHorasColaborador
 {
@@ -32,6 +36,27 @@ namespace ControleHorasColaborador
                     .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "API de Controle de Horas",
+                    Description = "API Para controle de horas de colaboradores e equipes",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Rubens Augusto",
+                        Email = "derc332@gmail.com",
+                        Url = new Uri("https://github.com/RubensAMJr"),
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
+            
+
             services.AddEntityFrameworkSqlServer()
            .AddDbContext<ControleHorasContext>(options =>
               options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ControleHorasDB;Trusted_Connection=true;"));
@@ -47,7 +72,18 @@ namespace ControleHorasColaborador
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("./swagger/v1/swagger.json", "ColaboradorControle API");
+                c.RoutePrefix = string.Empty;
+            });
+
+
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseRouting();
 

@@ -26,14 +26,13 @@ namespace ControleHorasColaborador.Controllers
         /// Realiza o cadastro de quantidade de horas de um projeto
         /// </summary>
         /// <remarks>
-        /// Request de exemplo:
+        /// Example request:
         ///
         ///     POST 
         ///     {
         ///       "QuantidadeHoras":10, 
         ///       "ProjetoId":4   
         ///     }
-        ///
         /// </remarks>
         /// <response code ="200" >Retorna o projeto com as horas cadastradas</response>
         /// <response code="404">Se o projeto não for encontrado ou se ele não possuir uma equipe associada a ele</response>

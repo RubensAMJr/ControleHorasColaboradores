@@ -24,74 +24,139 @@ namespace ControleHorasColaborador.Controllers
         /// <summary>
         /// Retorna todos os colaboradores cadastrados
         /// </summary>
-        [ActionName("GetAllColaboradores")]
+        /// <response code="200">Retorna uma lista com todos os colaboradores</response>
+        [ActionName("GetColaborador")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Colaborador>>> GetColaboradores()
+        public async Task<ActionResult<IEnumerable<Colaborador>>> GetColaborador()
         {
-            return await _context.Colaboradores.ToListAsync();
+			try
+			{
+				return await _context.Colaboradores.ToListAsync();
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"Erro ao retornar os colaboradores: {e.Message}",e);
+			}
         }
 
         /// <summary>
         /// Retorna os dados de um colaborador pelo ID dele
         /// </summary>
-        [ActionName("GetColaboradorById")]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Colaborador>> GetColaborador(long id)
+        /// <param name="idColaborador"></param>
+        /// <response code="200">Retorna o colaborador com o Id informado</response>
+        [ActionName("GetColaborador")]
+        [HttpGet("{idColaborador}")]
+        public async Task<ActionResult<Colaborador>> GetColaborador(long idColaborador)
         {
-            var colaborador = await _context.Colaboradores.FindAsync(id);
+			try
+			{
+				var colaborador = await _context.Colaboradores.FindAsync(idColaborador);
 
-            if (colaborador == null)
-            {
-                return NotFound("O Colaborador com o id informado não foi encontrado");
+				if (colaborador == null)
+					return NotFound("O Colaborador com o id informado não foi encontrado");
+
+                return colaborador;
             }
-
-            return colaborador;
+			catch (Exception e)
+			{
+                throw new Exception($"Erro ao retornar o colaborador {idColaborador}: {e.Message}", e);
+            }
         }
 
         /// <summary>
         /// Adiciona um novo colaborador
         /// </summary>
+        /// <param name="colaborador">Colaborador a ser adicionado</param>
         [ActionName("AdicionarColaborador")]
         [HttpPost]
         public async Task<ActionResult<Colaborador>> PostColaborador(Colaborador colaborador)
         {
-                _context.Colaboradores.Add(colaborador);
-                await _context.SaveChangesAsync();
+			try
+			{
+				_context.Colaboradores.Add(colaborador);
+				await _context.SaveChangesAsync();
 
-                return CreatedAtAction("AdicionarColaborador", new { id = colaborador.ColaboradorId }, colaborador);
+				return CreatedAtAction("AdicionarColaborador", new { id = colaborador.ColaboradorId }, colaborador);
+			}
+			catch (Exception e)
+			{
+                throw new Exception($"Erro ao adicionar o colaborador {colaborador.Nome}: {e.Message}", e);
+            }
+        }
 
+        /// <summary>
+        /// Altera os dados de um colaborador
+        /// Example request:
+        ///     PUT 
+        ///     {
+        ///       "ColaboradorId":10, 
+        ///       "Nome":"John Doe"   
+        ///     }
+        /// </summary>
+        [ActionName("AlterarColaborador")]
+        [HttpPut]
+        public async Task<ActionResult<Colaborador>> AlterarColaborador(ColaboradorRequestModel colaboradorRequest)
+        {
+			try
+			{
+				var colaborador = await _context.Colaboradores.FindAsync(colaboradorRequest.ColaboradorId);
+
+				if (colaborador == null)
+					return NotFound("O Colaborador com o id informado não foi encontrado");
+
+				colaborador.Nome = colaboradorRequest.Nome;
+				_context.Entry(colaborador).State = EntityState.Modified;
+
+				await _context.SaveChangesAsync();
+
+				return colaborador;
+			}
+			catch (Exception e)
+			{
+                throw new Exception($"Erro ao editar o colaborador {colaboradorRequest.Nome}: {e.Message}", e);
+            }
         }
 
         /// <summary>
         /// Remove um colaborador
         /// </summary>
+        /// <param name="idColaborador">Id do colaborador a ser removido</param>
+        /// <response code="200">Colaborador removido com sucesso</response>
+        /// <response code="404">Colaborador informado não foi encontrado</response>
+        /// <response code="409">Colaborador informado está associado á uma equipe</response>
         [ActionName("RemoverColaborador")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Colaborador>> DeleteColaborador(long id)
+        public async Task<ActionResult<Colaborador>> DeleteColaborador(long idColaborador)
         {
-            var colaborador = await _context.Colaboradores.FindAsync(id);
-            if (colaborador == null)
-            {
-                return NotFound("O Colaborador com o id informado não foi encontrado");
-            }
+			try
+			{
+				var colaborador = await _context.Colaboradores.FindAsync(idColaborador);
 
-            if (ColaboradorEstaEmEquipe(id))
-            {
-                return Conflict("Este colaborador está associado á uma equipe, não è possível remove-lo");
-            }
-            else
-            {
-                _context.Colaboradores.Remove(colaborador);
+				if (colaborador == null)
+					return NotFound("O Colaborador com o id informado não foi encontrado");
 
-                await _context.SaveChangesAsync();
+				if (ColaboradorEstaEmEquipe(idColaborador))
+				{
+					return Conflict("Este colaborador está associado á uma equipe, não è possível remove-lo");
+				}
+				else
+				{
+					_context.Colaboradores.Remove(colaborador);
 
-                return colaborador;
+					await _context.SaveChangesAsync();
+
+					return Ok("Colaborador removido com sucesso");
+				}
+			}
+			catch (Exception e)
+			{
+                throw new Exception($"Erro ao editar o colaborador {idColaborador}: {e.Message}", e);
             }
         }
 
-        private bool ColaboradorEstaEmEquipe(long id)
+        private bool ColaboradorEstaEmEquipe(long idColaborador)
         {
-            return _context.EquipeColaborador.Where(ec => ec.ColaboradorId == id).FirstOrDefault() != null;
+            return _context.EquipeColaborador.Where(ec => ec.ColaboradorId == idColaborador).FirstOrDefault() != null;
         }
     }
 }
